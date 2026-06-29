@@ -95,8 +95,8 @@ class DatabaseCartItem(BaseModel):
     id = AutoField(primary_key=True)
     name = CharField()
     price = DoubleField() #this allows for decimal values, which is what we want for price
-    quantity = IntegerField() #got this from methods and fields documentation for peewee, we dont use doublefield for quantity because we want whole numbers for quantity, not decimals
-   
+    quantity = IntegerField(default=1) #got this from methods and fields documentation for peewee, we dont use doublefield for quantity because we want whole numbers for quantity, not decimals
+
 
 
 
