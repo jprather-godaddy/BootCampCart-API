@@ -9,6 +9,9 @@ from cart_api.database import DatabaseCartItem, DatabaseProducts
 # CartItem should have responders for GET DELETE PATCH
 # Your API response statuses and bodies should conform to your OpenAPI spec
 
+#Fetch a Cart Item row based on the given item_id
+#Delete a Cart Item row based on the given item_id
+#Update a Cart Item row based on the given item_id
 
 class CartItems:
     def on_get(self, req, resp):

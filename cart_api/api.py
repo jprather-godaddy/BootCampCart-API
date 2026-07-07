@@ -1,5 +1,3 @@
-__author__ = "Andrew Williamson <axwilliamson@godaddy.com>"
-
 import falcon
 from swagger_ui import falcon_api_doc
 from cart_api.routes.heartbeat import Heartbeat

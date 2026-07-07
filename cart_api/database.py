@@ -1,5 +1,3 @@
-__author__ = "Andrew Williamson <axwilliamson@godaddy.com>"
-
 import inspect
 import os
 import sys
@@ -12,6 +10,7 @@ from playhouse.postgres_ext import (
     IntegerField,
     DoubleField,
     BooleanField,
+    IntegerField,
 )
 
 database = os.environ.get("POSTGRES_DB", "bootcamp")
@@ -29,8 +28,8 @@ class BaseModel(Model):
             database, user=user, password=password, host=hostname, autorollback=True
         )
 
-
-class DatabaseProducts(BaseModel):
+# creating a table in the database for products with the following fields
+class DatabaseProducts(BaseModel):  
     id = AutoField(primary_key=True)
     name = CharField()
     description = CharField(null=True)
@@ -39,6 +38,7 @@ class DatabaseProducts(BaseModel):
     is_on_sale = BooleanField(default=False)
     sale_price = DoubleField(null=True)
     quantity = IntegerField(default=0)
+
 
     @classmethod
     def prepopulate(cls):  # pragma: nocover
@@ -94,6 +94,16 @@ class DatabaseProducts(BaseModel):
 # Define an ORM class called DatabaseCartItem which inherits from BaseModel
 # and has the properties and types defined by your swagger spec.
 # if neccesary, update EXAMPLE_CART_ITEM in cart_api_tests/test_exercises.py to match
+#this will look almost exactly like the DatabaseProducts class above, but with different fields and types for cart
+
+class DatabaseCartItem(BaseModel): 
+    id = AutoField(primary_key=True)
+    name = CharField()
+    price = DoubleField() #this allows for decimal values, which is what we want for price
+    quantity = IntegerField(default=1) #got this from methods and fields documentation for peewee, we dont use doublefield for quantity because we want whole numbers for quantity, not decimals
+
+
+
 
 
 class DatabaseCartItem(BaseModel):

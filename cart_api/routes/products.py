@@ -4,9 +4,9 @@ from cart_api.database import DatabaseProducts
 
 
 class Product:
-    def on_get(self, req, resp, product_id):
+    def on_get(self, req, resp, product_id): 
         product = DatabaseProducts.get(id=product_id)
-        resp.media = model_to_dict(product)
+        resp.media = model_to_dict(product) 
         resp.status = falcon.HTTP_200
 
     def on_delete(self, req, resp, product_id):
@@ -18,6 +18,8 @@ class Product:
 # Products route should respond to GET and POST requests
 # GET products returns a list of every product in the database
 # POST products creates a product and returns the data it created
+
+    
 
 
 class Products:
