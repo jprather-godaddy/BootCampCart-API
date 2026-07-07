@@ -42,7 +42,7 @@ logs:
 	docker-compose logs -f
 
 prune: _docker_stop_api_detached
-	docker volume rm 2021bootcamp-api_postgresdb
+	docker volume rm bootcampcart-api_postgresdb
 
 gen_diagrams:
 	docker-compose run api python /diagrams/gen_diagrams.py
