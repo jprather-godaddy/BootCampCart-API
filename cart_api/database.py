@@ -1,5 +1,3 @@
-__author__ = "Andrew Williamson <axwilliamson@godaddy.com>"
-
 import inspect
 import os
 import sys

@@ -4,9 +4,9 @@ from cart_api.database import DatabaseProducts
 
 
 class Product:
-    def on_get(self, req, resp, product_id):
+    def on_get(self, req, resp, product_id): 
         product = DatabaseProducts.get(id=product_id)
-        resp.media = model_to_dict(product)
+        resp.media = model_to_dict(product) 
         resp.status = falcon.HTTP_200
 
     def on_delete(self, req, resp, product_id):
@@ -19,9 +19,25 @@ class Product:
 # GET products returns a list of every product in the database
 # POST products creates a product and returns the data it created
 
+    
 
-class Products:
+
+class Products: #used the query section in the documentation
     pass  # must have a pass line because you cannot have a "blank" class
     # def on_get(self, req, resp):
+    def on_get(self, req, resp):
+        products = DatabaseProducts.select()
+        allProducts = [] 
 
-    # def on_post(self, req, resp):
+        for product in products:
+            allProducts.append(model_to_dict(product))
+        resp.media = allProducts
+        resp.status = falcon.HTTP_200
+
+    # def on_post(self, req, resp): 
+    def on_post(self, req, resp): 
+        product = DatabaseProducts.create(**req.media)
+        resp.media = model_to_dict(product)
+        resp.status = falcon.HTTP_201
+
+        
