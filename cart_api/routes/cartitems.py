@@ -1,8 +1,6 @@
 import falcon
 from playhouse.shortcuts import model_to_dict
-from cart_api.database import DatabaseCartItem
-
-# from cart_api.database import DatabaseCartItem
+from cart_api.database import DatabaseCartItem, DatabaseProducts
 
 
 # Exercise 3:
@@ -16,39 +14,33 @@ from cart_api.database import DatabaseCartItem
 #Update a Cart Item row based on the given item_id
 
 class CartItems:
-    def on_post(self, req, resp):
-        new_cartitem = req.get_media()
-        new_model = DatabaseCartItem(
-            name=new_cartitem["name"],
-            price=new_cartitem["price"],
-            quantity=new_cartitem["quantity"],
-        )
-        new_model.save()
-        resp.media = model_to_dict(new_model)
-        resp.status = falcon.HTTP_201
-
     def on_get(self, req, resp):
+        cartItems = DatabaseCartItem.select()
         resp.media = []
-        cartitems = DatabaseCartItem.select()
-        for cartitem in cartitems:
-            resp.media.append(model_to_dict(cartitem))
+        for cartItem in cartItems:
+            cartItem_dict = model_to_dict(cartItem)
+            resp.media.append(cartItem_dict)
         resp.status = falcon.HTTP_200
+
+    def on_post(self, req, resp):
+        cart_item_data = req.media
+        new_cart_item = DatabaseCartItem.create(**cart_item_data)
+        resp.media = model_to_dict(new_cart_item)
+        resp.status = falcon.HTTP_201
 
 
 class CartItem:
-    def on_get(self, req, resp, cartitem_id):
-        cartitem = DatabaseCartItem.get(id=cartitem_id)
-        resp.media = model_to_dict(cartitem)
+    def on_get(self, req, resp, cart_item_id):
+        cart_item = DatabaseCartItem.get(id=cart_item_id)
+        resp.media = model_to_dict(cart_item)
         resp.status = falcon.HTTP_200
 
-    def on_delete(self, req, resp, cartitem_id):
-        DatabaseCartItem.delete_by_id(cartitem_id)
+    def on_delete(self, req, resp, cart_item_id):
+        DatabaseCartItem.delete_by_id(cart_item_id)
         resp.status = falcon.HTTP_204
 
-    def on_patch(self, req, resp, cartitem_id):
-        cartitem = DatabaseCartItem.get(id=cartitem_id)
-        changes = req.media
-        if "quantity" in changes:
-            cartitem.quantity = changes["quantity"]
-            cartitem.save()
+    def on_patch(self, req, resp, cart_item_id):
+        cart_item_data = req.media
+        query = DatabaseCartItem.update(**cart_item_data).where(DatabaseCartItem.id == cart_item_id)
+        query.execute()
         resp.status = falcon.HTTP_204
