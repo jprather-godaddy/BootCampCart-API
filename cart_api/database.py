@@ -38,6 +38,7 @@ class DatabaseProducts(BaseModel):
     price = DoubleField()
     is_on_sale = BooleanField(default=False)
     sale_price = DoubleField(null=True)
+    quantity = IntegerField(default=0)
 
     @classmethod
     def prepopulate(cls):  # pragma: nocover
@@ -49,6 +50,7 @@ class DatabaseProducts(BaseModel):
                 price=14.99,
                 is_on_sale=False,
                 sale_price=8.99,
+                quantity=0,
             ),
             DatabaseProducts(
                 id=2,
@@ -57,6 +59,7 @@ class DatabaseProducts(BaseModel):
                 price=29.99,
                 is_on_sale=True,
                 sale_price=19.99,
+                quantity=10,
             ),
             DatabaseProducts(
                 id=3,
@@ -64,6 +67,7 @@ class DatabaseProducts(BaseModel):
                 description="Purchase a .com domain",
                 price=9.99,
                 is_on_sale=False,
+                quantity=5,
             ),
             DatabaseProducts(
                 id=4,
@@ -71,6 +75,7 @@ class DatabaseProducts(BaseModel):
                 description="Purchase a .org domain",
                 price=8.99,
                 is_on_sale=False,
+                quantity=3,
             ),
             DatabaseProducts(
                 id=5,
@@ -79,6 +84,7 @@ class DatabaseProducts(BaseModel):
                 price=8.99,
                 is_on_sale=True,
                 sale_price=4.99,
+                quantity=7,
             ),
         ]
         DatabaseProducts.bulk_create(products)
@@ -92,8 +98,13 @@ class DatabaseProducts(BaseModel):
 
 class DatabaseCartItem(BaseModel):
     id = AutoField(primary_key=True)
+    product_id = IntegerField(null=True)
     name = CharField()
+    description = CharField(null=True)
+    image_url = CharField(null=True)
     price = DoubleField()
+    is_on_sale = BooleanField(default=False)
+    sale_price = DoubleField(null=True)
     quantity = IntegerField()
 
     @classmethod
