@@ -1,0 +1,167 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "BootCampCart API: docker compose up",
+			"type": "shell",
+			"command": "export DOCKER_DEFAULT_PLATFORM=linux/amd64 && docker compose up --build -d --force-recreate",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: docker compose logs",
+			"type": "shell",
+			"command": "docker compose logs -f",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: docker compose up",
+			"type": "shell",
+			"command": "export DOCKER_DEFAULT_PLATFORM=linux/amd64 && docker compose up --build -d --force-recreate",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: curl health",
+			"type": "shell",
+			"command": "curl -s http://localhost:8000/heartbeat && echo '\n---' && curl -s http://localhost:8000/v1/products/1",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: docker compose logs api",
+			"type": "shell",
+			"command": "docker compose logs api --tail=200",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: reset and restart",
+			"type": "shell",
+			"command": "export DOCKER_DEFAULT_PLATFORM=linux/amd64 && docker compose down -v --remove-orphans && docker compose up --build -d --force-recreate",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: fetch seeded data",
+			"type": "shell",
+			"command": "curl -s http://localhost:8000/heartbeat && echo '\n---' && curl -s http://localhost:8000/v1/products/1",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: git branch check",
+			"type": "shell",
+			"command": "git checkout -B feat/aderienz/promo && git branch --show-current",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: coupon endpoint check",
+			"type": "shell",
+			"command": "curl -s http://localhost:8000/v1/coupons/SAVE10",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: git branch verify",
+			"type": "shell",
+			"command": "git branch --show-current && echo '---' && git status --short --branch",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: coupon cart demo",
+			"type": "shell",
+			"command": "curl -s -X POST http://localhost:8000/v1/cartitems/1/apply-coupon -H 'Content-Type: application/json' -d '{\"code\":\"SAVE10\"}'",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: coupon cart demo",
+			"type": "shell",
+			"command": "curl -s -X POST http://localhost:8000/v1/cartitems/1/apply-coupon -H 'Content-Type: application/json' -d '{\"code\":\"SAVE10\"}'",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: cart coupon logs",
+			"type": "shell",
+			"command": "docker compose logs api --tail=100",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: recreate DB and verify coupon cart flow",
+			"type": "shell",
+			"command": "export DOCKER_DEFAULT_PLATFORM=linux/amd64 && docker compose down -v --remove-orphans && docker compose up --build -d --force-recreate && echo '--- APPLY ---' && curl -s -X POST http://localhost:8000/v1/cartitems/1/apply-coupon -H 'Content-Type: application/json' -d '{\"code\":\"SAVE10\"}' && echo '\n--- CART ITEM ---' && curl -s http://localhost:8000/v1/cartitems/1",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: inspect cart error",
+			"type": "shell",
+			"command": "docker compose logs api --tail=120",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: create cart item and apply coupon",
+			"type": "shell",
+			"command": "curl -s -X POST http://localhost:8000/v1/cartitems -H 'Content-Type: application/json' -d '{\"name\":\"Demo Item\",\"price\":20.0,\"quantity\":1}' && echo '\n--- APPLY ---' && curl -s -X POST http://localhost:8000/v1/cartitems/1/apply-coupon -H 'Content-Type: application/json' -d '{\"code\":\"SAVE10\"}' && echo '\n--- CART ---' && curl -s http://localhost:8000/v1/cartitems/1",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: verify coupon on cart item",
+			"type": "shell",
+			"command": "curl -s -X POST http://localhost:8000/v1/cartitems -H 'Content-Type: application/json' -d '{\"name\":\"Demo Item\",\"price\":20.0,\"quantity\":1}' > /tmp/cart-create.json && cart_id=$(python - <<'PY'\nimport json\nwith open('/tmp/cart-create.json') as f:\n    print(json.load(f)['id'])\nPY\n) && echo \"cart_id=$cart_id\" && curl -s -X POST http://localhost:8000/v1/cartitems/$cart_id/apply-coupon -H 'Content-Type: application/json' -d '{\"code\":\"SAVE10\"}' && echo '\n---' && curl -s http://localhost:8000/v1/cartitems/$cart_id",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: verify coupon on cart item",
+			"type": "shell",
+			"command": "curl -s -X POST http://localhost:8000/v1/cartitems -H 'Content-Type: application/json' -d '{\"name\":\"Demo Item\",\"price\":20.0,\"quantity\":1}' > /tmp/cart-create.json && cart_id=$(python3 - <<'PY'\nimport json\nwith open('/tmp/cart-create.json') as f:\n    print(json.load(f)['id'])\nPY\n) && echo \"cart_id=$cart_id\" && curl -s -X POST http://localhost:8000/v1/cartitems/$cart_id/apply-coupon -H 'Content-Type: application/json' -d '{\"code\":\"SAVE10\"}' && echo '\n---' && curl -s http://localhost:8000/v1/cartitems/$cart_id",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: verify coupon on cart item",
+			"type": "shell",
+			"command": "cart_id=46 && echo \"cart_id=$cart_id\" && curl -s -X POST http://localhost:8000/v1/cartitems/$cart_id/apply-coupon -H 'Content-Type: application/json' -d '{\"code\":\"SAVE10\"}' && echo '\n---' && curl -s http://localhost:8000/v1/cartitems/$cart_id",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "BootCampCart API: verify coupon response",
+			"type": "shell",
+			"command": "curl -s -X POST http://localhost:8000/v1/cartitems/46/apply-coupon -H 'Content-Type: application/json' -d '{\"code\":\"SAVE10\"}' && echo '\n---' && curl -s http://localhost:8000/v1/cartitems/46",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
