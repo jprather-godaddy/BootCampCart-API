@@ -4,7 +4,7 @@ from cart_api.routes.heartbeat import Heartbeat
 from cart_api.routes.products import Product, Products
 from cart_api.routes.cartitems import CartItem, CartItems
 from cart_api.routes.wishlistitems import WishlistItem, WishlistItems
-
+from cart_api.routes.checkout import Checkout, Order
 
 
 # Instantiate RESTful API and resources
@@ -15,6 +15,8 @@ product = Product()
 products = Products()
 cartItem = CartItem()
 cartItems = CartItems()
+checkout = Checkout()
+order = Order()
 
 # Define our API's routes
 api.add_route("/heartbeat", hb)
@@ -24,7 +26,8 @@ api.add_route("/v1/cartitems/{cart_item_id:int}", cartItem)
 api.add_route("/v1/cartitems", cartItems)
 api.add_route("/v1/wishlistitems/{wishlist_item_id:int}", WishlistItem())
 api.add_route("/v1/wishlistitems", WishlistItems())
-
+api.add_route("/v1/checkout", checkout)
+api.add_route("/v1/orders/{order_id:int}", order)
 
 # Add a route which serves our OpenAPI specification
 falcon_api_doc(
