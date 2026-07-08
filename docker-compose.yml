@@ -28,6 +28,8 @@ services:
 
   api:
     restart: always
+    env_file:
+      - .env
     build:
       dockerfile: Dockerfile
       context: .
@@ -46,6 +48,8 @@ services:
       POSTGRES_DB: bootcamp
       POSTGRES_HOST: db
       API_CLEAR_DB: ${API_CLEAR_DB}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
     healthcheck:
       test:
         [
@@ -77,6 +81,8 @@ services:
       POSTGRES_DB: bootcamp
       POSTGRES_HOST: db
       API_HOST: api
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
     command: > # another way of defining commands
       bash -c "coverage run --source cart_api -m pytest -rA /cart_api && coverage report -m"
     depends_on:
