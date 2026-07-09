@@ -3,6 +3,9 @@ from swagger_ui import falcon_api_doc
 from cart_api.routes.heartbeat import Heartbeat
 from cart_api.routes.products import Product, Products
 from cart_api.routes.cartitems import CartItem, CartItems
+from cart_api.routes.wishlistitems import WishlistItem, WishlistItems
+from cart_api.routes.checkout import Checkout, Order
+
 from cart_api.routes.chatbot import Chatbot
 from cart_api.routes.promocodes import PromoCodes, PromoCode, RandomPromoCode, ApplyPromoCode
 
@@ -14,6 +17,8 @@ product = Product()
 products = Products()
 cartItem = CartItem()
 cartItems = CartItems()
+checkout = Checkout()
+order = Order()
 chatbot = Chatbot()
 promo_codes = PromoCodes()
 promo_code = PromoCode()
@@ -26,6 +31,10 @@ api.add_route("/v1/products/{product_id:int}", product)
 api.add_route("/v1/products", products)
 api.add_route("/v1/cartitems/{cart_item_id:int}", cartItem)
 api.add_route("/v1/cartitems", cartItems)
+api.add_route("/v1/wishlistitems/{wishlist_item_id:int}", WishlistItem())
+api.add_route("/v1/wishlistitems", WishlistItems())
+api.add_route("/v1/checkout", checkout)
+api.add_route("/v1/orders/{order_id:int}", order)
 api.add_route("/v1/chatbot", chatbot)
 api.add_route("/v1/promocodes", promo_codes)
 api.add_route("/v1/promocodes/random", random_promo)

@@ -10,7 +10,7 @@ from playhouse.postgres_ext import (
     IntegerField,
     DoubleField,
     BooleanField,
-    IntegerField,
+    DateTimeField,
 )
 
 database = os.environ.get("POSTGRES_DB", "bootcamp")
@@ -90,21 +90,6 @@ class DatabaseProducts(BaseModel):
         DatabaseProducts.bulk_create(products)
 
 
-# Excercise 1:
-# Define an ORM class called DatabaseCartItem which inherits from BaseModel
-# and has the properties and types defined by your swagger spec.
-# if neccesary, update EXAMPLE_CART_ITEM in cart_api_tests/test_exercises.py to match
-#this will look almost exactly like the DatabaseProducts class above, but with different fields and types for cart
-
-class DatabaseCartItem(BaseModel): 
-    id = AutoField(primary_key=True)
-    name = CharField()
-    price = DoubleField() #this allows for decimal values, which is what we want for price
-    quantity = IntegerField(default=1) #got this from methods and fields documentation for peewee, we dont use doublefield for quantity because we want whole numbers for quantity, not decimals
-
-
-
-
 
 class DatabaseCartItem(BaseModel):
     id = AutoField(primary_key=True)
@@ -117,29 +102,27 @@ class DatabaseCartItem(BaseModel):
     sale_price = DoubleField(null=True)
     quantity = IntegerField()
 
-    @classmethod
-    def prepopulate(cls):  # pragma: nocover
-        cart_items = [
-            DatabaseCartItem(
-                id=1,
-                name="Standard SSL",
-                price=14.99,
-                quantity=1,
-            ),
-            DatabaseCartItem(
-                id=2,
-                name="Wildcard SSL",
-                price=29.99,
-                quantity=2,
-            ),
-            DatabaseCartItem(
-                id=3,
-                name="Domain - .com",
-                price=9.99,
-                quantity=1,
-            ),
-        ]
-        DatabaseCartItem.bulk_create(cart_items)
+class DatabaseWishlistItem(BaseModel):
+    id = AutoField(primary_key=True)
+    product_id = IntegerField(null=True)
+    name = CharField()
+    description = CharField(null=True)
+    image_url = CharField(null=True)
+    price = DoubleField()
+    is_on_sale = BooleanField(default=False)
+    sale_price = DoubleField(null=True)
+
+
+class DatabaseOrder(BaseModel):
+    id = AutoField(primary_key=True)
+    name = CharField()
+    email = CharField()
+    address = CharField()
+    city = CharField()
+    state = CharField()
+    zip_code = CharField()
+    total_price = DoubleField()
+    created_at = DateTimeField()
 
 
 class DatabasePromoCode(BaseModel):
