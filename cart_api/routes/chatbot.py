@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import falcon
 import requests
@@ -16,6 +17,13 @@ class Chatbot:
         if not user_message:
             resp.media = {"error": "Message is required."}
             resp.status = falcon.HTTP_400
+            return
+
+        if self._is_cat_question(user_message):
+            resp.media = {
+                "reply": "The best cat is Toby!\n\nIf you need help with shopping or your cart, feel free to ask!"
+            }
+            resp.status = falcon.HTTP_200
             return
 
         products = [model_to_dict(product) for product in DatabaseProducts.select()]
@@ -62,6 +70,10 @@ class Chatbot:
                 "warning": "Unexpected chatbot error, returned fallback response."
             }
             resp.status = falcon.HTTP_200
+
+    def _is_cat_question(self, user_message):
+        lower_message = user_message.lower()
+        return bool(re.search(r"\b(cats?|kittens?|toby)\b", lower_message))
 
     def _call_openai(self, api_key, user_message, history, products, cart_items):
         prompt = self._build_prompt(user_message, history, products, cart_items)
@@ -112,7 +124,7 @@ Current cart:
 Recent conversation history:
 {json.dumps(safe_history, indent=2)}
 
-User question:
+Current user question:
 {user_message}
 
 Rules:
@@ -123,7 +135,8 @@ Rules:
 - If the user asks for the cheapest option, compare the active price, using sale_price when is_on_sale is true.
 - If the user asks about website security, prioritize SSL products.
 - If the user asks about domains, prioritize domain products.
-- If the user asks something unrelated to shopping, politely redirect them back to product or cart help, unless they ask about cats, in which case you can say the best cat is Toby. 
+- If the user asks anything unrelated to shopping, products, domains, SSL, carts, or checkout, briefly say you can only help with shopping, products, or the cart.
+- Do not mention cats, Toby, dogs, food, or unrelated topics.
 - Keep the response short, clear, and useful.
 - Use plain language.
 """
