@@ -125,6 +125,38 @@ class DatabaseOrder(BaseModel):
     created_at = DateTimeField()
 
 
+class DatabasePromoCode(BaseModel):
+    id = AutoField(primary_key=True)
+    code = CharField(unique=True)
+    discount_percent = DoubleField()  # percentage discount (e.g., 10.0 for 10%)
+    is_active = BooleanField(default=True)
+    description = CharField(null=True)
+
+    @classmethod
+    def prepopulate(cls):  # pragma: nocover
+        promo_codes = [
+            DatabasePromoCode(
+                code="SAVE10",
+                discount_percent=10.0,
+                is_active=True,
+                description="10% off your order"
+            ),
+            DatabasePromoCode(
+                code="SUMMER25",
+                discount_percent=25.0,
+                is_active=True,
+                description="Summer sale - 25% off!"
+            ),
+            DatabasePromoCode(
+                code="FREESHIP",
+                discount_percent=5.0,
+                is_active=True,
+                description="5% off with free shipping"
+            ),
+        ]
+        DatabasePromoCode.bulk_create(promo_codes)
+
+
 # BOOTCAMPERS: Don't modify anything below
 ALL_MODELS = [
     c_type
@@ -149,6 +181,10 @@ def init_tables(table_models=None):  # pragma: nocover
         if DatabaseProducts in table_models:
             print(f"✅ Populating table: {DatabaseProducts.__name__}")
             DatabaseProducts.prepopulate()
+
+        if DatabasePromoCode in table_models:
+            print(f"✅ Populating table: {DatabasePromoCode.__name__}")
+            DatabasePromoCode.prepopulate()
 
 
 # Create any tables that don't exist

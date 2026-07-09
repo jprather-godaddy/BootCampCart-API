@@ -102,3 +102,4 @@ ENV/
 
 # Custom Stuff
 .postgressdb/data
+.env

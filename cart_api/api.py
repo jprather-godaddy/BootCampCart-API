@@ -6,6 +6,8 @@ from cart_api.routes.cartitems import CartItem, CartItems
 from cart_api.routes.wishlistitems import WishlistItem, WishlistItems
 from cart_api.routes.checkout import Checkout, Order
 
+from cart_api.routes.chatbot import Chatbot
+from cart_api.routes.promocodes import PromoCodes, PromoCode, RandomPromoCode, ApplyPromoCode
 
 # Instantiate RESTful API and resources
 api = falcon.App(cors_enable=True)
@@ -17,6 +19,11 @@ cartItem = CartItem()
 cartItems = CartItems()
 checkout = Checkout()
 order = Order()
+chatbot = Chatbot()
+promo_codes = PromoCodes()
+promo_code = PromoCode()
+random_promo = RandomPromoCode()
+apply_promo = ApplyPromoCode()
 
 # Define our API's routes
 api.add_route("/heartbeat", hb)
@@ -28,6 +35,11 @@ api.add_route("/v1/wishlistitems/{wishlist_item_id:int}", WishlistItem())
 api.add_route("/v1/wishlistitems", WishlistItems())
 api.add_route("/v1/checkout", checkout)
 api.add_route("/v1/orders/{order_id:int}", order)
+api.add_route("/v1/chatbot", chatbot)
+api.add_route("/v1/promocodes", promo_codes)
+api.add_route("/v1/promocodes/random", random_promo)
+api.add_route("/v1/promocodes/apply", apply_promo)
+api.add_route("/v1/promocodes/{code}", promo_code)
 
 # Add a route which serves our OpenAPI specification
 falcon_api_doc(
