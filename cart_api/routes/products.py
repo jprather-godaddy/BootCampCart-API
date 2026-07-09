@@ -34,7 +34,11 @@ class Products:
         resp.status = falcon.HTTP_200
 
     def on_post(self, req, resp):
-        product_data = req.media
-        new_product = DatabaseProducts.create(**product_data)
-        resp.media = model_to_dict(new_product)
+        product = DatabaseProducts.create(**req.media)
+        product_data = model_to_dict(product)
+
+        if "quantity" in product_data:
+            del product_data["quantity"]
+
+        resp.media = product_data
         resp.status = falcon.HTTP_201
